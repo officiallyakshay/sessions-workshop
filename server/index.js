@@ -3,7 +3,6 @@ const express = require('express');
 const expressSession = require('express-session');
 const chalk = require('chalk');
 const { syncAndSeed } = require('./db/index.js');
-// const users = require('./db/index');
 const User = require('./db/models/User')
 
 const PORT = 3000;
@@ -38,23 +37,37 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/api/login', (req, res, next) => {
+app.post('/api/login', async (req, res, next) => {
   const { username, password } = req.body;
-  User.findOne({ 
-    where: {
-      username: req.params.username,
-      password: req.params.password
+  try {
+    const user = await User.findOne({ 
+      where: {
+        userName: username,
+        password: password
+      }
+    })
+    if (!user) {
+      res.redirect('/');
+    } else {
+      req.session.user = user;
+      res.send(user);
     }
-  });
+  }
+  catch(ex) {
+    next(ex);
+  }
+
+  // console.log(user);
+  // console.log(req.session.user);
   // TODO: This obviously isn't all we should do...
   res.status(200).send({ something: 'probably user related?' });
   // You can toggle this to see how the app behaves if an error goes down...
   // res.status(401).send({ message: 'You are unauthorized!' });
 });
 
-app.get('/api/logout', (req, res, next) => {
+app.post('/api/logout', (req, res, next) => {
   // TODO: Build this functionality.
-  res.session.destroy();
+  req.session = null;
   res.status(204).send({ message: 'Logged out' })
   next();
 });
@@ -70,10 +83,10 @@ app.get('/api/session', (req, res, next) => {
 });
 
 app.get('/user', (req, res, next) => {
-  req.session.username = users[req.params.username];
+  // req.session.username = users[req.params.username];
   // console.log(req.session.username)
   // if (!req.body.username) {
-    // res.redirect('/')
+  //   res.redirect('/')
   // }
 });
 
