@@ -6,6 +6,12 @@ const User = db.define('user', {
   uselessColumn: {
     type: STRING,
   },
+  userName: {
+    type: STRING
+  },
+  password: {
+    type: STRING
+  }
 });
 
 module.exports = User;
