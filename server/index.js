@@ -40,9 +40,11 @@ app.use((req, res, next) => {
 
 app.post('/api/login', (req, res, next) => {
   const { username, password } = req.body;
-  User.findOne({
-    username: username,
-    password: password
+  User.findOne({ 
+    where: {
+      username: req.params.username,
+      password: req.params.password
+    }
   });
   // TODO: This obviously isn't all we should do...
   res.status(200).send({ something: 'probably user related?' });
