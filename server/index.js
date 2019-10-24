@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const expressSession = require('express-session');
 const chalk = require('chalk');
 const { syncAndSeed } = require('./db/index.js');
 
@@ -22,8 +23,18 @@ const STATIC_DIR = path.join(__dirname, '../static');
 app.use(express.json());
 app.use(express.static(STATIC_DIR));
 
+app.use(expressSession({
+  saveUninitialized: true,
+  resave: false,
+  secret: 'Xan\'s secret'
+}));
+
 // simple logging middleware to view each request in your terminal - this is useful for debugging purposes
 app.use((req, res, next) => {
+  console.log('reqbody', req.body)
+  if (!req.body.username) {
+    res.redirect('/')
+  }
   console.log(`Request to ${req.path} - Body: `, req.body);
   next();
 });
@@ -45,7 +56,15 @@ app.get('/api/logout', (req, res, next) => {
 
 app.get('/api/session', (req, res, next) => {
   // TODO: Build this functionality.
+  res.send({ message: req.user || 'No User' })
 });
+
+// app.get('/user', (req, res, next) => {
+//   console.log('req', req);
+//   if (!req.sessions.username) {
+//     res.redirect('/')
+//   }
+// });
 
 app.get('*', (req, res) => res.sendFile(path.join(STATIC_DIR, './index.html')));
 

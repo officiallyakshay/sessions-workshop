@@ -19,24 +19,5 @@ const User = db.define('user', {
   }
 });
 
-const sync = async () => {
-  await db.sync({ force: true });
+module.exports = User;
 
-
-  const userNames = [
-    {userName: 'shay', password: 'SHAY' },
-    {userName: 'zan', password: 'ZAN' },
-    {userName: 'tdubs', password: 'TDUBS' },
-    {userName: 'mclark', password: 'MCLARK' },
-    {userName: 'jdmann', password: 'JDMANN' }
-  ];
-
-  const [shay, zan, tdubs, jdmann, mclark] = await Promise.all(userNames.map( userName => User.create(userName)));
-}
-
-module.exports = {
-  sync,
-  models: {
-    User
-  }
-};
