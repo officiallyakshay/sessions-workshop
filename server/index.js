@@ -3,6 +3,8 @@ const express = require('express');
 const expressSession = require('express-session');
 const chalk = require('chalk');
 const { syncAndSeed } = require('./db/index.js');
+// const users = require('./db/index');
+const User = require('./db/models/User')
 
 const PORT = 3000;
 
@@ -31,18 +33,17 @@ app.use(expressSession({
 
 // simple logging middleware to view each request in your terminal - this is useful for debugging purposes
 app.use((req, res, next) => {
-  console.log('reqbody', req.body)
-  if (!req.body.username) {
-    res.redirect('/')
-  }
+  // req.session = {};
   console.log(`Request to ${req.path} - Body: `, req.body);
   next();
 });
 
 app.post('/api/login', (req, res, next) => {
   const { username, password } = req.body;
-
-
+  User.findOne({
+    username: username,
+    password: password
+  });
   // TODO: This obviously isn't all we should do...
   res.status(200).send({ something: 'probably user related?' });
   // You can toggle this to see how the app behaves if an error goes down...
@@ -51,20 +52,28 @@ app.post('/api/login', (req, res, next) => {
 
 app.get('/api/logout', (req, res, next) => {
   // TODO: Build this functionality.
+  res.session.destroy();
+  res.status(204).send({ message: 'Logged out' })
   next();
 });
 
 app.get('/api/session', (req, res, next) => {
   // TODO: Build this functionality.
-  res.send({ message: req.user || 'No User' })
+  const user = req.session.user;
+  if (user) {
+    return res.send(user);
+  } else {
+    res.status(401).send({ message: 'Unauthorized' })
+  }
 });
 
-// app.get('/user', (req, res, next) => {
-//   console.log('req', req);
-//   if (!req.sessions.username) {
-//     res.redirect('/')
-//   }
-// });
+app.get('/user', (req, res, next) => {
+  req.session.username = users[req.params.username];
+  // console.log(req.session.username)
+  // if (!req.body.username) {
+    // res.redirect('/')
+  // }
+});
 
 app.get('*', (req, res) => res.sendFile(path.join(STATIC_DIR, './index.html')));
 

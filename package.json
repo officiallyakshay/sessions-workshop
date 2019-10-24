@@ -1,12 +1,12 @@
 {
   "name": "sessions-workshop",
   "version": "1.0.0",
-  "description": "",
+  "description": "![Cookies](https://media1.giphy.com/media/BWoUbBTz1yuhW05Sgp/giphy.gif)",
   "main": "index.js",
   "scripts": {
     "start:dev": "npm run start:dev-server & npm run start:dev-client",
-    "start:dev-server": "./node_modules/.bin/nodemon -q --delay 1 -w server server/index.js",
-    "start:dev-client": "./node_modules/.bin/webpack client/index.js -o static/client.js -w --mode=\\\"development\\\" --module-bind js=babel-loader --devtool=source-map --display=normal",
+    "start:dev-server": "nodemon -q --delay 1 -w server server/index.js",
+    "start:dev-client": "webpack client/index.js -o static/client.js -w --mode=\\\"development\\\" --module-bind js=babel-loader --devtool=source-map --display=normal",
     "create:database": "./createdb.sh"
   },
   "keywords": [],
@@ -44,5 +44,13 @@
     "sequelize": "^5.21.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/officiallyakshay/sessions-workshop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/officiallyakshay/sessions-workshop/issues"
+  },
+  "homepage": "https://github.com/officiallyakshay/sessions-workshop#readme"
 }
