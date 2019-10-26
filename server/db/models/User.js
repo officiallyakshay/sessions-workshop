@@ -8,7 +8,7 @@ const User = db.define('user', {
     defaultValue: UUIDV4,
     primaryKey: true
   },
-  userName: {
+  username: {
     type: STRING,
     validate: {
       notEmpty: true

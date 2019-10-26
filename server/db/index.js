@@ -3,17 +3,15 @@ const db = require('./db.js');
 
 const syncAndSeed = () => db
   .sync({ force: true })
-  .then( async () => {
-    // TODO: Seed...
-      const userNames = [
-        {userName: 'shay', password: 'SHAY' },
-        {userName: 'zan', password: 'ZAN' },
-        {userName: 'tdubs', password: 'TDUBS' },
-        {userName: 'mclark', password: 'MCLARK' },
-        {userName: 'jdmann', password: 'JDMANN' }
+    .then( async () => {
+      const usernames = [
+        {username: 'shay', password: 'SHAY' },
+        {username: 'zan', password: 'ZAN' },
+        {username: 'tdubs', password: 'TDUBS' },
+        {username: 'mclark', password: 'MCLARK' },
+        {username: 'jdmann', password: 'JDMANN' }
       ];
-      const [shay, zan, tdubs, jdmann, mclark] = await Promise.all(userNames.map( userName => User.create(userName)));
-    return true;
+      const [shay, zan, tdubs, jdmann, mclark] = await Promise.all(usernames.map( username => User.create(username) ));
   })
   .catch(e => {
     console.error(e);

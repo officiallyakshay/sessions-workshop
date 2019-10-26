@@ -4,6 +4,7 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
+import User from './components/User';
 import Home from './components/home/Home.js';
 
 class Router extends Component {
@@ -11,9 +12,8 @@ class Router extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          {/* TODO: This should lead to an authenticated page... */}
           <Route path={"/user"} exact>
-            Hello There!
+           <User />
           </Route>
           <Route>
             <Home />
